@@ -1,15 +1,17 @@
 import threading 
 import datetime
 import busio
-import digitalio
 import board
+import digitalio
 import math
 import adafruit_mcp3xxx.mcp3008 as MCP
 from adafruit_mcp3xxx.analog_in import AnalogIn
 import RPi.GPIO as GPIO
 
 
-btn = 37
+GPIO.setmode(GPIO.BCM)
+
+btn = 26
 sample_rate = 10  #  default is 10
 start_time = datetime.datetime.now()
 
@@ -36,10 +38,11 @@ def timed_thread():
 	thread.start()
 	current_time = math.trunc((datetime.datetime.now() - start_time).total_seconds())
 	print(str(current_time) + "s\t" + str(chan.value) + "\t\t" + str(chan1.value) + "\t\t" + str(round((chan1.value/600), 2)) + 'C')
-	# the Temp sensor needs working, not right
+	pass
+	#  the Temp sensor needs working, not right
 # print(datetime.datetime.now())
 
-def callback():
+def callback(self):
 	global sample_rate
 	if sample_rate == 10:
 		sample_rate = 5
@@ -47,13 +50,13 @@ def callback():
 		sample_rate = 1
 	else:
 		sample_rate = 10
-
+	pass
 def setup():
 	timed_thread() # call it once to start thread
-	GPIO.setmode(GPIO.BOARD)
+	# GPIO.setmode(GPIO.BOARD)
 	GPIO.setup(btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 	GPIO.add_event_detect(btn, GPIO.FALLING, callback=callback, bouncetime=500)
-
+	pass
 if __name__ == "__main__":
 	print("Runtime" + "\t" + "LDR Reading" + "\t" + "Temp Reading" + "\t" + "Temp")
 	setup() #  call setup
