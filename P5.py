@@ -1,11 +1,11 @@
 import threading 
-import datetime
-import busio
-import board
-import digitalio
-import math
-import adafruit_mcp3xxx.mcp3008 as MCP
-from adafruit_mcp3xxx.analog_in import AnalogIn
+import datetime 
+import busio 
+import board 
+import digitalio 
+import math 
+import adafruit_mcp3xxx.mcp3008 as MCP 
+from adafruit_mcp3xxx.analog_in import AnalogIn 
 import RPi.GPIO as GPIO
 
 
@@ -37,10 +37,9 @@ def timed_thread():
 	thread.daemon = True
 	thread.start()
 	current_time = math.trunc((datetime.datetime.now() - start_time).total_seconds())
-	print(str(current_time) + "s\t" + str(chan.value) + "\t\t" + str(chan1.value) + "\t\t" + str(round((chan1.value/600), 2)) + 'C')
+	print(str(current_time) + "s\t" + str(chan.value) + "\t\t" + str(chan1.value) + "\t\t" + str(round(((chan1.voltage - 0.500)/0.010), 2)) + 'C')
 	pass
 	#  the Temp sensor needs working, not right
-# print(datetime.datetime.now())
 
 def callback(self):
 	global sample_rate
@@ -51,6 +50,7 @@ def callback(self):
 	else:
 		sample_rate = 10
 	pass
+
 def setup():
 	timed_thread() # call it once to start thread
 	# GPIO.setmode(GPIO.BOARD)
